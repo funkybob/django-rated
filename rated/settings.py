@@ -9,3 +9,5 @@ REALMS = getattr(settings, 'RATED_REALMS', {})
 
 REALM_MAP = getattr(settings, 'RATED_REALM_MAP', {})
 
+REDIS = getattr(settings, 'RATED_REDIS', {})
+

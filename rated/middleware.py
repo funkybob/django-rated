@@ -1,6 +1,10 @@
 
-from .settings import REALMS, DEFAULT_LIMIT, DEFAULT_TIMEOUT, REALM_MAP
+from . import settings
 
+import redis
+
+# Connection pool
+pool = redis.ConnectionPool(**settings.REDIS)
 
 class RatedMiddleware(object):
 
@@ -10,25 +14,27 @@ class RatedMiddleware(object):
             realm = request._rated_realm
         except AttributeError:
             try:
-                realm = REALM_MAP[request.resolver_match.url_name]
+                realm = settings.REALM_MAP[request.resolver_match.url_name]
             except KeyError:
                 return None
         # should we also try the view name?
 
-        conf = REALMS.get(realm, {})
+        conf = settings.REALMS.get(realm, {})
         key = 'rated:%s:%s' % (realm, request.META['REMOTE_ADDR'],)
         now = time.time()
+
+        client = redis.Redis(connection_pool=pool)
         # Do commands at once for speed
-        pipe = redis.pipeline()
+        pipe = client.pipeline()
         # Add our timestamp to the range
         pipe.zadd(key, now, now)
         # Update to not expire for another hour
-        pipe.expireat(key, now + conf.get('timeout', DEFAULT_TIMEOUT))
+        pipe.expireat(key, now + conf.get('timeout', settings.DEFAULT_TIMEOUT))
         # Remove old values
-        pipe.zremrangebyscore(key, '-inf', now - HOUR)
+        pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_TIMEOUT)
         # Test count
         pipe.zcard(key)
         size = pipe.execute()[-1]
-        if size > conf.get('limit', DEFAULT_LIMIT):
+        if size > conf.get('limit', settings.DEFAULT_LIMIT):
             return HttpResponse(status=501)
         return None
