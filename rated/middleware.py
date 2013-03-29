@@ -1,10 +1,13 @@
 
 from . import settings
 
+from django.http import HttpResponse
+
+import time
 import redis
 
 # Connection pool
-pool = redis.ConnectionPool(**settings.REDIS)
+POOL = redis.ConnectionPool(**settings.REDIS)
 
 class RatedMiddleware(object):
 
@@ -23,7 +26,7 @@ class RatedMiddleware(object):
         key = 'rated:%s:%s' % (realm, request.META['REMOTE_ADDR'],)
         now = time.time()
 
-        client = redis.Redis(connection_pool=pool)
+        client = redis.Redis(connection_pool=POOL)
         # Do commands at once for speed
         pipe = client.pipeline()
         # Add our timestamp to the range
