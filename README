@@ -12,6 +12,28 @@ You control which views are in which 'realm' by either decorating the view, or a
 
 rated will keep track of how many requests, and when, a client has made and, if they've exceeded their limit, will return a 503 - Service Unavailable response.
 
+Installing
+==========
+
+In your settings.py add to your MIDDLEWARE_CLASSES:
+    'rated.middleware.RatedMiddleware',
+
+Then, add a RATED_REALMS dict.
+
+There are three ways to apply rate limits.  Either decorate the view directly, add a realm with the same url pattern name, or map the url pattern name to a realm.
+
+You can add mark a view as in the default realm simply:
+
+    @rated_realm
+    def myview(...)
+
+To add it to a specific realm:
+
+    @rated_realm(realm='other')
+    def myview(...)
+
+Otherwise, if the url pattern is named, and the name matches a realm name, it will be considered part of that realm.  There is also the RATED_REALM_MAP, which will map url pattern names to realm names.  The url pattern name is always mapped through here.
+
 Settings
 ========
 
