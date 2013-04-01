@@ -14,7 +14,7 @@ class RatedMiddleware(object):
     def process_view(self, request, view_func, view_args, view_kwargs):
         # Try to determine the realm for this view
         try:
-            realm = request._rated_realm
+            realm = view_func._rated_realm
         except AttributeError:
             try:
                 realm = settings.REALM_MAP[request.resolver_match.url_name]
