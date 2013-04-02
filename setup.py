@@ -19,5 +19,6 @@ setup(
     ],
     requires = [
         'Django (>=1.5)',
+        'redis (>=2.7.2)',
     ],
 )
