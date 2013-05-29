@@ -32,7 +32,7 @@ class RatedMiddleware(object):
         # Add our timestamp to the range
         pipe.zadd(key, now, now)
         # Update to not expire for another hour
-        pipe.expireat(key, now + conf.get('timeout', settings.DEFAULT_TIMEOUT))
+        pipe.expireat(key, int(now + conf.get('timeout', settings.DEFAULT_TIMEOUT)))
         # Remove old values
         pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_TIMEOUT)
         # Test count
