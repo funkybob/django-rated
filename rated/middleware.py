@@ -22,8 +22,15 @@ class RatedMiddleware(object):
                 return None
         # should we also try the view name?
 
+        source = request.META['REMOTE_ADDR']
+
         conf = settings.REALMS.get(realm, {})
-        key = 'rated:%s:%s' % (realm, request.META['REMOTE_ADDR'],)
+
+        # Check against Realm whitelist
+        if source in conf.get('whitelist', settings.DEFAULT_WHITELIST):
+            return None
+
+        key = 'rated:%s:%s' % (realm, source,)
         now = time.time()
 
         client = redis.Redis(connection_pool=POOL)
