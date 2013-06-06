@@ -46,5 +46,5 @@ class RatedMiddleware(object):
         pipe.zcard(key)
         size = pipe.execute()[-1]
         if size > conf.get('limit', settings.DEFAULT_LIMIT):
-            return HttpResponse(status=501)
+            return HttpResponse(status=429)
         return None
