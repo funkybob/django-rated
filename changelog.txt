@@ -1,3 +1,6 @@
+v0.0.3:
++ Return 429 (Too Many Requests) instead of 501 (Not Implemented) when rate limit is reached
+
 v0.0.2:
 + Added support for whitelist
 
