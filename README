@@ -52,7 +52,7 @@ RATED_DEFAULT_LIMIT:
 RATED_REALMS:
     A dict of config dicts.
     The keys are realm names.
-    The values are dicts containing overrides for 'limit' and 'timeout'.
+    The values are dicts containing overrides for 'limit', 'timeout' and 'whitelist'.
     Default: {}
 
 RATED_REALM_MAP:
@@ -62,3 +62,6 @@ RATED_REALM_MAP:
 
 RATED_REDIS:
     Redis config settings.
+
+RATED_DEFAULT_WHITELIST:
+    A list of IPs who are exempt from rate limiting.
