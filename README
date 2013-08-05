@@ -18,7 +18,23 @@ Installing
 In your settings.py add to your MIDDLEWARE_CLASSES:
     'rated.middleware.RatedMiddleware',
 
-Then, add a RATED_REALMS dict.
+Configuring
+===========
+
+Next, configure your realms.  This is done by defining them in the RATED_REALMS setting.  This is a dict where the keys are realm names, and the values are dicts of configs.
+
+A realm config may contain any of the following keys.  Any omitted fall back to the defaults from the settings below.
+
+    whitelist:  A list of IPs to exclude from rate limiting.
+    timeout:    Time after which any requests are forgotten
+    limit:      Number of requests before limiting is applied.
+    code:       HTTP Status code to use when limiting is applied.
+    message:    Response content to return when limiting is applied.
+
+If you're planning to put all limited views into the one realm, you don't need to define RATED_REALMS - the defaults will be used instead.
+
+Assign Realms
+=============
 
 There are three ways to apply rate limits.  Either decorate the view directly, add a realm with the same url pattern name, or map the url pattern name to a realm.
 
