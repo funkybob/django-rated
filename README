@@ -49,6 +49,14 @@ RATED_DEFAULT_LIMIT:
     Limit of how many requests an individual client is permitted per hour.
     Default: 100
 
+RATED_RESPONSE_CODE:
+    HTTP Status code to return when a request is limited.
+    Default: 429
+
+RATED_RESPONSE_MESSAGE:
+    Content to include in response when a request is limited.
+    Default: ''
+
 RATED_REALMS:
     A dict of config dicts.
     The keys are realm names.
