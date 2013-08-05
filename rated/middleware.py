@@ -35,10 +35,11 @@ class RatedMiddleware(object):
 
         client = redis.Redis(connection_pool=POOL)
         # Do commands at once for speed
+        # This also wraps them in a transaction, so they operate atomically
         pipe = client.pipeline()
         # Add our timestamp to the range
         pipe.zadd(key, now, now)
-        # Update to not expire for another hour
+        # Update to not expire for another TIMEOUT
         pipe.expireat(key, int(now + conf.get('timeout', settings.DEFAULT_TIMEOUT)))
         # Remove old values
         pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_TIMEOUT)
