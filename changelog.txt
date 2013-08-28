@@ -1,3 +1,6 @@
+v1.0.1:
+- Don't wrap pipeline call in transaction
+
 v1.0.0:
 + Added RATED_RESPONSE_CODE and RATED_RESPONSE_MESSAGE config options
 
