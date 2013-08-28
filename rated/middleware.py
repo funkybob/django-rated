@@ -35,8 +35,9 @@ class RatedMiddleware(object):
 
         client = redis.Redis(connection_pool=POOL)
         # Do commands at once for speed
-        # This also wraps them in a transaction, so they operate atomically
-        pipe = client.pipeline()
+        # We don't need these top operate in a transaction, as none of the values
+        # we send are dependant on values in the DB
+        pipe = client.pipeline(transaction=False)
         # Add our timestamp to the range
         pipe.zadd(key, now, now)
         # Update to not expire for another TIMEOUT
