@@ -54,38 +54,48 @@ Settings
 ========
 
 RATED_DEFAULT_REALM:
+
     The default realm to put views into.
     Default: 'default'
 
 RATED_DEFAULT_TIMEOUT:
+
     How long an access history persists with no accesses.
     Default: 1 hour
 
 RATED_DEFAULT_LIMIT:
+
     Limit of how many requests an individual client is permitted per hour.
     Default: 100
 
 RATED_RESPONSE_CODE:
+
     HTTP Status code to return when a request is limited.
     Default: 429
 
 RATED_RESPONSE_MESSAGE:
+
     Content to include in response when a request is limited.
     Default: ''
 
 RATED_REALMS:
+
     A dict of config dicts.
     The keys are realm names.
     The values are dicts containing overrides for 'limit', 'timeout' and 'whitelist'.
     Default: {}
 
 RATED_REALM_MAP:
+
     A mapping of url pattern names to realms.
     This allows you to apply limits to views in 3rd party apps.
     Default: {}
 
 RATED_REDIS:
+
     Redis config settings.
+    These will be passed directly to create a redis.ConnectionPool instance.
 
 RATED_DEFAULT_WHITELIST:
-    A list of IPs who are exempt from rate limiting.
+
+    A list of IPs which are exempt from rate limiting.
