@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-rated',
-    version='1.0.1',
+    version='1.0.2',
     description='A rate limiting middleware for Django',
     author='Curtis Maloney',
     author_email='curtis@tinbrain.net',

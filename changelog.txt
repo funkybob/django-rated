@@ -1,3 +1,6 @@
+v1.0.2:
+- Fix leftover code
+
 v1.0.1:
 - Don't wrap pipeline call in transaction
 
