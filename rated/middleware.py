@@ -49,6 +49,6 @@ class RatedMiddleware(object):
         size = pipe.execute()[-1]
         if size > conf.get('limit', settings.DEFAULT_LIMIT):
             return HttpResponse(conf.get('message', settings.RESPONSE_MESSAGE),
-                status=conf.get('code', settings.RESPONSE_CODE, 429)
+                status=conf.get('code', settings.RESPONSE_CODE)
             )
         return None
