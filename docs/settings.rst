@@ -29,9 +29,10 @@ The default realm to put rated views into.
 RATED_DEFAULT_TIMEOUT
 ---------------------
 
-Default: 60 * 60  (1 hour)
+Default: 60 * 60
 
-Duration over wich requests are counted.  Any request older than this is not counted toward rate limiting.
+Duration (in seconds) over wich requests are counted.  Any request older than
+this is not counted toward rate limiting.
 
 RATED_DEFAULT_LIMIT
 -------------------
