@@ -6,6 +6,15 @@
 Welcome to django-rated's documentation!
 ========================================
 
+.. image:: https://travis-ci.org/funkybob/django-rated.png
+           :target: https://secure.travis-ci.org/funkybob/django-rated.png?branch=master
+
+.. image:: https://pypip.in/d/django-rated/badge.png
+           :target: https://crate.io/packages/django-rated
+
+.. image:: https://pypip.in/v/django-rated/badge.png
+           :target: https://crate.io/packages/django-rated
+
 Rated is a multi-realm rate limiting middleware for Django.
 
 Quickstart
@@ -37,6 +46,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   realms
    settings
    changelog
 
