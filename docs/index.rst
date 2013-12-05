@@ -6,7 +6,7 @@
 Welcome to django-rated's documentation!
 ========================================
 
-Rated is a multi-domain rate limiting middleware for Django.
+Rated is a multi-realm rate limiting middleware for Django.
 
 Quickstart
 ----------
@@ -37,6 +37,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   settings
    changelog
 
 
