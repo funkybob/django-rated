@@ -16,6 +16,9 @@ def rate_limit(func=None, realm=None):
     if func is None:
         return partial(rate_limit, realm=realm)
 
+    # Annotate the view with its realm
+    rated_realm(func, realm)
+
     @wraps(func)
     def _inner(request, *args, **kwargs):
         result = RatedMiddleware().process_view(request, func, args, kwargs)
