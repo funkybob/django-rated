@@ -1,8 +1,8 @@
 
 from functools import partial, wraps
 
-from .middleware import RatedMiddleware
 from .settings import DEFAULT_REALM
+from .utils import BACKEND
 
 def rated_realm(func=None, realm=None):
     '''Annotate a view for a given realm.'''
@@ -18,12 +18,10 @@ def rate_limit(func=None, realm=None):
 
     @wraps(func)
     def _inner(request, *args, **kwargs):
-        result = RatedMiddleware().process_view(request, func, args, kwargs)
-        if result is None:
-            return func(request, *args, **kwargs)
-        return result
-
-    rated_realm(_inner, realm)
+        source = BACKEND.source_for_request(request)
+        if BACKEND.check_realm(source, realm):
+            return BACKEND.make_limit_response(realm)
+        return func(request, *args, **kwargs)
 
     return _inner
 
@@ -34,11 +32,9 @@ def rate_limit_method(func=None, realm=None):
 
     @wraps(func)
     def _inner(self, request, *args, **kwargs):
-        result = RatedMiddleware().process_view(request, func, args, kwargs)
-        if result is None:
-            return func(self, request, *args, **kwargs)
-        return result
-
-    rated_realm(func, realm)
+        source = BACKEND.source_for_request(request)
+        if BACKEND.check_realm(source, realm):
+            return BACKEND.make_limit_response(realm)
+        return func(self, request, *args, **kwargs)
 
     return _inner
