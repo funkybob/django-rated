@@ -6,6 +6,9 @@ from .utils import BACKEND
 
 def rate_limit(func=None, realm=None):
     '''Apply rate limiting directly to any view-like function.'''
+    if realm is None:
+        realm = DEFAULT_REALM
+
     if func is None:
         return partial(rate_limit, realm=realm)
 
