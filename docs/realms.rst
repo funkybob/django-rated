@@ -46,7 +46,8 @@ It can also be used in url patterns, for instance with Class-Based Views
 rate_limit decorator
 --------------------
 
-Instead of adding the middleware, you can use the `rate_limit` decorator directly on views.
+Instead of adding the middleware, you can use the `rate_limit` decorator
+directly on views.
 
 .. code-block:: python
 
@@ -60,6 +61,8 @@ Instead of adding the middleware, you can use the `rate_limit` decorator directl
     def other_view(request):
         ...
 
+For Class-Based Views, and django-nap Publishers, there is also
+`rate_limit_method`, which works identically to `rate_limit`.
 
 
 Realm map
