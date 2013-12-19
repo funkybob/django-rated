@@ -28,3 +28,19 @@ def rate_limit(func=None, realm=None):
 
     return _inner
 
+def rate_limit_method(method=None, realm=None):
+    '''Same as above, but for class methods'''
+    if method is None:
+        return partial(rate_limit_method, realm=None)
+
+    rated_realm(method, realm)
+
+    @wraps(method)
+    def _inner(self, request, *args, **kwargs):
+        result = RatedMiddleware().process_view(request, method, args, kwargs)
+        if result is None:
+            return method(self, request, *args, **kwargs)
+        return result
+
+    return _inner
+
