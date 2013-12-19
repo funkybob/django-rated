@@ -49,7 +49,7 @@ class RatedMiddleware(object):
         pipe.zcard(key)
         size = pipe.execute()[-1]
         if size > conf.get('limit', settings.DEFAULT_LIMIT):
-            rate_limited.send_robuse(realm, client=source)
+            rate_limited.send_robust(realm, client=source)
             return HttpResponse(conf.get('message', settings.RESPONSE_MESSAGE),
                 status=conf.get('code', settings.RESPONSE_CODE)
             )
