@@ -2,6 +2,18 @@
 Changelog
 =========
 
+v1.1.0:
+=======
+
+Backward Incompatible Changes:
+
+* rated_realm decorator is no longer supported
+* TIMEOUT has been renamed to DURATION
+
+Features:
+
++ Refactored code to share functions
+
 v1.0.3:
 =======
 

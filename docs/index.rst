@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to django-rated's documentation!
-========================================
+======================================
+django-rated - Rate Limiting made easy
+======================================
 
 .. image:: https://travis-ci.org/funkybob/django-rated.png
            :target: https://secure.travis-ci.org/funkybob/django-rated.png?branch=master
@@ -15,9 +16,21 @@ Welcome to django-rated's documentation!
 .. image:: https://pypip.in/v/django-rated/badge.png
            :target: https://crate.io/packages/django-rated
 
-Rated is a multi-realm rate limiting middleware for Django.
+Rated provides fine-grained rate limiting controls for Django.
 
+It allows you do define multiple "realms", each with its own limit, whitelist,
+and responses.
+
+There are two mechanisms, which can be used individually, or combined:
+
+1. Middlware that lets you assign url patterns into realms.
+2. Decorators that let you rate limit views individually.
+
+----------
 Quickstart
+----------
+
+Middleware
 ----------
 
 1. Add 'rated.middleware.RatedMiddleware' to your settings.MIDDLEWARE_CLASSES
@@ -28,17 +41,41 @@ Quickstart
 
    RATED_DEFAULT_REALM = 'default'
    # Duration over which we count requests
-   RATED_DEFAULT_TIMEOUT = 60 * 60
-   # Maximum number of requests in TIMEOUT period
+   RATED_DEFAULT_DURATION = 60 * 60
+   # Maximum number of requests in DURATION period
    RATED_DEFAULT_LIMIT = 100
 
-3. Mark views as belonging to a rate limited realm.
+3. Assign URL patterns to realms:
 
 .. code-block:: python
 
-   @rated_realm
-   def myview(request...
+    RATED_REALMS_MAP = {
+        'index': 'default',
+        'important_view': 'default',
+    }
 
+Decorators
+----------
+
+1. Set your limits
+
+.. code-block:: python
+
+   RATED_DEFAULT_REALM = 'default'
+   # Duration over which we count requests
+   RATED_DEFAULT_DURATION = 60 * 60
+   # Maximum number of requests in DURATION period
+   RATED_DEFAULT_LIMIT = 100
+
+2. Decorate your views
+
+.. code-block:: python
+
+    @rate_limit
+    def my_view(request, ...)
+
+    @rate_limit(realm='special')
+    def special_view(request, ...)
 
 Contents:
 ---------
@@ -47,6 +84,8 @@ Contents:
    :maxdepth: 2
 
    realms
+   middleware
+   decorators
    settings
    changelog
 
