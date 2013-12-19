@@ -16,9 +16,6 @@ def rate_limit(func=None, realm=None):
     if func is None:
         return partial(rate_limit, realm=realm)
 
-    # Annotate the view with its realm
-    rated_realm(func, realm)
-
     @wraps(func)
     def _inner(request, *args, **kwargs):
         result = RatedMiddleware().process_view(request, func, args, kwargs)
@@ -26,21 +23,22 @@ def rate_limit(func=None, realm=None):
             return func(request, *args, **kwargs)
         return result
 
+    rated_realm(_inner, realm)
+
     return _inner
 
-def rate_limit_method(method=None, realm=None):
-    '''Same as above, but for class methods'''
-    if method is None:
-        return partial(rate_limit_method, realm=None)
+def rate_limit_method(func=None, realm=None):
+    '''Rate limit a view-like method'''
+    if func is None:
+        return partial(rate_limit_method, realm=realm)
 
-    rated_realm(method, realm)
-
-    @wraps(method)
+    @wraps(func)
     def _inner(self, request, *args, **kwargs):
-        result = RatedMiddleware().process_view(request, method, args, kwargs)
+        result = RatedMiddleware().process_view(request, func, args, kwargs)
         if result is None:
-            return method(self, request, *args, **kwargs)
+            return func(self, request, *args, **kwargs)
         return result
 
-    return _inner
+    rated_realm(func, realm)
 
+    return _inner
