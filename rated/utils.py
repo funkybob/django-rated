@@ -44,10 +44,10 @@ class RateLimitBackend(object):
         pipe = client.pipeline(transaction=False)
         # Add our timestamp to the range
         pipe.zadd(key, now, now)
-        # Update to not expire for another TIMEOUT
-        pipe.expireat(key, int(now + conf.get('timeout', settings.DEFAULT_TIMEOUT)))
+        # Update to not expire for another DURATION
+        pipe.expireat(key, int(now + conf.get('duration', settings.DEFAULT_DURATION)))
         # Remove old values
-        pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_TIMEOUT)
+        pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_DURATION)
         # Test count
         pipe.zcard(key)
         size = pipe.execute()[-1]

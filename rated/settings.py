@@ -3,7 +3,7 @@ from django.conf import settings
 
 DEFAULT_REALM = getattr(settings, 'RATED_DEFAULT_REALM', 'default')
 DEFAULT_LIMIT = getattr(settings, 'RATED_DEFAULT_LIMIT', 100)
-DEFAULT_TIMEOUT = getattr(settings, 'RATED_DEFAULT_TIMEOUT', 60 * 60)
+DEFAULT_DURATION = getattr(settings, 'RATED_DEFAULT_DURATION', 60 * 60)
 
 RESPONSE_CODE = getattr(settings, 'RATED_RESPONSE_CODE', 429)
 RESPONSE_MESSAGE = getattr(settings, 'RATED_RESPONSE_MESSAGE', '')
