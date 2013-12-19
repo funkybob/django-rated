@@ -4,13 +4,6 @@ from functools import partial, wraps
 from .settings import DEFAULT_REALM
 from .utils import BACKEND
 
-def rated_realm(func=None, realm=None):
-    '''Annotate a view for a given realm.'''
-    if func is None:
-        return partial(rated_realm, realm=realm)
-    func._rated_realm = realm or DEFAULT_REALM
-    return func
-
 def rate_limit(func=None, realm=None):
     '''Apply rate limiting directly to any view-like function.'''
     if func is None:
