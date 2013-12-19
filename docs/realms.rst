@@ -43,6 +43,25 @@ It can also be used in url patterns, for instance with Class-Based Views
     # Place CBV in a realm
     url(r'^$', rated_realm(MyView.as_view()))
 
+rate_limit decorator
+--------------------
+
+Instead of adding the middleware, you can use the `rate_limit` decorator directly on views.
+
+.. code-block:: python
+
+    from rated.decorators import rate_limit
+
+    @rate_limit
+    def first_view(request):
+        ...
+
+    @rate_limt(realm='other')
+    def other_view(request):
+        ...
+
+
+
 Realm map
 ---------
 
