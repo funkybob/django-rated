@@ -13,6 +13,7 @@ Backward Incompatible Changes:
 Features:
 
 + Refactored code to share functions
++ Now supports X-Forwarded-For
 
 v1.0.3:
 =======
