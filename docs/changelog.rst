@@ -20,7 +20,7 @@ v1.0.3:
 
 Features:
 
-+ Add 'rate_limited' signal
++ Add `rate_limited` signal
 + Add `rate_limit` decorator
 
 v1.0.2:
