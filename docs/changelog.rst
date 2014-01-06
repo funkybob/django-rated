@@ -14,6 +14,7 @@ Features:
 
 + Refactored code to share functions
 + Now supports X-Forwarded-For
++ Middleware is no longer required
 
 v1.0.3:
 =======
