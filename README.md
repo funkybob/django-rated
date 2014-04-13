@@ -30,7 +30,7 @@ Next, configure your realms.  This is done by defining them in the RATED_REALMS 
 A realm config may contain any of the following keys.  Any omitted fall back to the defaults from the settings below.
 
     whitelist:  A list of IPs to exclude from rate limiting.
-    timeout:    Time after which any requests are forgotten
+    duration:   Time after which any requests are forgotten
     limit:      Number of requests before limiting is applied.
     code:       HTTP Status code to use when limiting is applied.
     message:    Response content to return when limiting is applied.
