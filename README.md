@@ -44,7 +44,9 @@ There are three ways to apply rate limits.  Either decorate the view directly, a
 
 You can add mark a view as in the default realm simply:
 
-    @rated_realm
+    from rated.decorators import rate_limit
+
+    @rate_limit
     def myview(...)
 
 To add it to a specific realm:

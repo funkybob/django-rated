@@ -13,11 +13,12 @@ class RateLimitBackend(object):
 
     def source_for_request(self, request):
         '''Return a source identifier for a request'''
-        try:
-            return request.META['X-Forwarded-For']
-        except KeyError:
-            pass
-        return request.META['REMOTE_ADDR']
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
 
     def make_limit_response(self, realm):
         conf = settings.REALMS.get(realm, {})
