@@ -2,6 +2,13 @@
 Changelog
 =========
 
+v1.1.1:
+=======
+
+Bug fixes:
+
++ Corrected retrieval of IP from X-Forwarded-For header (thanks Nam!)
+
 v1.1.0:
 =======
 
