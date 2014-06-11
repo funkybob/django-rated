@@ -20,6 +20,6 @@ class RatedMiddleware(object):
 
         if BACKEND.check_realm(source, realm):
             rate_limited.send_robust(realm, client=source)
-            return BACKEND.make_limit_response()
+            return BACKEND.make_limit_response(realm)
 
         return None
