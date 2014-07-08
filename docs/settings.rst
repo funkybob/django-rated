@@ -16,6 +16,16 @@ Redis config settings.
 
 This will be passed directly to create a redis.ConnectionPool instance.
 
+Optional Settings
+=================
+
+USE_X_FORWARDED_FOR
+-------------------
+
+Default: False
+
+Set to True to try to use the X-Forwarded-For header to determine client IP.
+
 Default Settings
 ================
 

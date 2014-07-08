@@ -2,6 +2,16 @@
 Changelog
 =========
 
+v1.1.2:
+=======
+
+SECURITY RELEASE
+
++ X-Forwarded-For is no longer used by default.
+
+You can enable the old behavior by setting USE_X_FORWARDED_FOR = True in your
+settings.
+
 v1.1.1:
 =======
 
