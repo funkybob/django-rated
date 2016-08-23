@@ -9,6 +9,7 @@ from . import settings
 # Connection pool
 POOL = redis.ConnectionPool(**settings.REDIS)
 
+
 class RateLimitBackend(object):
 
     def source_for_request(self, request):
@@ -24,8 +25,7 @@ class RateLimitBackend(object):
         conf = settings.REALMS.get(realm, {})
 
         return HttpResponse(conf.get('message', settings.RESPONSE_MESSAGE),
-            status=conf.get('code', settings.RESPONSE_CODE)
-        )
+                            status=conf.get('code', settings.RESPONSE_CODE))
 
     def check_realm(self, source, realm):
         '''
@@ -44,19 +44,18 @@ class RateLimitBackend(object):
 
         client = redis.Redis(connection_pool=POOL)
         # Do commands at once for speed
-        # We don't need these to operate in a transaction, as none of the values
-        # we send are dependant on values in the DB
-        pipe = client.pipeline(transaction=False)
-        # Add our timestamp to the range
-        pipe.zadd(key, now, now)
-        # Update to not expire for another DURATION
-        pipe.expireat(key, int(now + conf.get('duration', settings.DEFAULT_DURATION)))
-        # Remove old values
-        pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_DURATION)
-        # Test count
-        pipe.zcard(key)
-        size = pipe.execute()[-1]
+        # We don't need these to operate in a transaction, as none of the
+        # values we send are dependant on values in the DB
+        with client.pipeline(transaction=False) as pipe:
+            # Add our timestamp to the range
+            pipe.zadd(key, now, now)
+            # Update to not expire for another DURATION
+            pipe.expireat(key, int(now + conf.get('duration', settings.DEFAULT_DURATION)))
+            # Remove old values
+            pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_DURATION)
+            # Test count
+            pipe.zcard(key)
+            size = pipe.execute()[-1]
         return size > conf.get('limit', settings.DEFAULT_LIMIT)
 
 BACKEND = RateLimitBackend()
-
