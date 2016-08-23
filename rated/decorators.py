@@ -1,36 +1,20 @@
-
-from functools import partial, wraps
+import wrapt
 
 from .settings import DEFAULT_REALM
 from .utils import BACKEND
 
-def rate_limit(func=None, realm=None):
+
+def rate_limit(realm=None):
     '''Apply rate limiting directly to any view-like function.'''
     if realm is None:
         realm = DEFAULT_REALM
 
-    if func is None:
-        return partial(rate_limit, realm=realm)
-
-    @wraps(func)
-    def _inner(request, *args, **kwargs):
+    @wrapt.decorator
+    def wrapper(wrapped, instance, args, kwargs):
+        request = args[0]
         source = BACKEND.source_for_request(request)
         if BACKEND.check_realm(source, realm):
             return BACKEND.make_limit_response(realm)
-        return func(request, *args, **kwargs)
+        return wrapped(*args, **kwargs)
 
-    return _inner
-
-def rate_limit_method(func=None, realm=None):
-    '''Rate limit a view-like method'''
-    if func is None:
-        return partial(rate_limit_method, realm=realm)
-
-    @wraps(func)
-    def _inner(self, request, *args, **kwargs):
-        source = BACKEND.source_for_request(request)
-        if BACKEND.check_realm(source, realm):
-            return BACKEND.make_limit_response(realm)
-        return func(self, request, *args, **kwargs)
-
-    return _inner
+    return wrapper
