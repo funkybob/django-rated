@@ -1,25 +1,25 @@
 
 from . import settings
+from .decorators import rate_limit
 from .signals import rate_limited
-from .utils import BACKEND
 
 
 class RatedMiddleware(object):
-    '''
-    Middleware to check for annotated views on each request.
-    '''
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    def __call__(self, request):
         # Try to determine the realm for this view
         try:
             realm = settings.REALM_MAP[request.resolver_match.url_name]
         except KeyError:
-            return None
+            pass  # Fall through to return
+        else:
+            limiter = rate_limit(None, realm=realm)
+            source = limiter.get_request_source(request)
 
-        source = BACKEND.source_for_request(request)
+            if limiter.check_realm(source):
+                rate_limited.send_robust(realm, client=source)
+                return limiter.make_limit_response()
 
-        if BACKEND.check_realm(source, realm):
-            rate_limited.send_robust(realm, client=source)
-            return BACKEND.make_limit_response(realm)
-
-        return None
+        return self.get_response(request)
