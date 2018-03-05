@@ -1,7 +1,7 @@
 django-rated
 ============
-[![Downloads](https://pypip.in/d/django-rated/badge.png)](https://crate.io/package/django-rated)
-[![Version](https://pypip.in/v/django-rated/badge.png)](https://crate.io/package/django-rated)
+[![Downloads](https://img.shields.io/pypi/dm/django-rated.svg)](https://crate.io/package/django-rated)
+[![Version](https://img.shields.io/pypi/v/django-rated.svg)](https://crate.io/package/django-rated)
 [![Build Status](https://secure.travis-ci.org/funkybob/django-rated.png?branch=master)](http://travis-ci.org/funkybob/django-rated)
 
 
