@@ -65,7 +65,7 @@ Default: ''
 
 Content to include in response when a request is limited.
 
-RATED_DEFAULT_WHITELIST
+RATED_DEFAULT_ALLOWED
 -----------------------
 
 Default: []

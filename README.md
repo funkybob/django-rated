@@ -10,26 +10,38 @@ A rate limiting middleware for Django
 Introduction
 ============
 
-rated allows you to limit the requests per hour a single client may attempt on views in 'realms' of your site.
+`rated`` allows you to limit request rates a single client may attempt on views in 'realms' of your site.
 
 You control which views are in which 'realm' by either decorating the view, or adding the url pattern into the realm map.
 
-rated will keep track of how many requests, and when, a client has made and, if they've exceeded their limit, will return a 503 - Service Unavailable response.
+`rated` will keep track of how many requests, and when, a client has made and, if they've exceeded their limit, will return a configurable response -- `503 - Service Unavailable` by default.
 
 Installing
 ==========
 
 In your settings.py add to your MIDDLEWARE_CLASSES:
+
+```py
     'rated.middleware.RatedMiddleware',
+```
+
+Or decorate your views:
+
+```py
+@rate_limit('myrealm')
+def myview(request):
+```
 
 Configuring
 ===========
 
-Next, configure your realms.  This is done by defining them in the RATED_REALMS setting.  This is a dict where the keys are realm names, and the values are dicts of configs.
+Next, configure your realms.
+
+This is done by defining them in the RATED_REALMS setting.  This is a dict where the keys are realm names, and the values are dicts of configs.
 
 A realm config may contain any of the following keys.  Any omitted fall back to the defaults from the settings below.
 
-    whitelist:  A list of IPs to exclude from rate limiting.
+    allowed:  A list of IPs to exclude from rate limiting.
     duration:   Time after which any requests are forgotten
     limit:      Number of requests before limiting is applied.
     code:       HTTP Status code to use when limiting is applied.
@@ -44,15 +56,19 @@ There are three ways to apply rate limits.  Either decorate the view directly, a
 
 You can add mark a view as in the default realm simply:
 
-    from rated.decorators import rate_limit
+```py
+from rated.decorators import rate_limit
 
-    @rate_limit
-    def myview(...)
+@rate_limit
+def myview(...)
+```
 
 To add it to a specific realm:
 
-    @rated_realm(realm='other')
-    def myview(...)
+```py
+@rated_realm(realm='other')
+def myview(...)
+```
 
 Otherwise, if the url pattern is named, and the name matches a realm name, it will be considered part of that realm.  There is also the RATED_REALM_MAP, which will map url pattern names to realm names.  The url pattern name is always mapped through here.
 
@@ -88,7 +104,7 @@ RATED_REALMS:
 
     A dict of config dicts.
     The keys are realm names.
-    The values are dicts containing overrides for 'limit', 'timeout' and 'whitelist'.
+    The values are dicts containing overrides for 'limit', 'timeout' and 'allowed'.
     Default: {}
 
 RATED_REALM_MAP:
@@ -102,6 +118,6 @@ RATED_REDIS:
     Redis config settings.
     These will be passed directly to create a redis.ConnectionPool instance.
 
-RATED_DEFAULT_WHITELIST:
+RATED_DEFAULT_ALLOWED:
 
     A list of IPs which are exempt from rate limiting.

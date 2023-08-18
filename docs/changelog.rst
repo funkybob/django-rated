@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v2.0.0:
+=======
+
++ Renamed "whitelist" to "allowed"
+
 v1.1.2:
 =======
 

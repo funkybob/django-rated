@@ -33,33 +33,3 @@ Alternatively, you can decorate views in your url patterns:
         url(r'^special/$', rate_limit(special_view, 'special')),
         url(r'^$', rate_limit(CBView.as_view())),
     )
-
-The `rate_limit_method` decorator
-=================================
-
-This decorator allows you to apply rate-limiting on any view-like method in a
-class-based view.  That is, any method that is passed request, and expected to
-return a HttpResponse class.
-
-At its simples, it can be used to decorate the `dispatch` method of any CBV.
-However, it can also be used to decorate the `get` or `post` method, allowing
-you to rate limit based on HTTP verb.
-
-Additionally, if you are using ``django-nap``, this can be used to rate-limit
-individual handler methods.
-
-Example
--------
-
-Here's an example of rate-liming only posting of new support request tickets:
-
-.. code-block:: python
-
-    class CreateRequestView(CreateView):
-        model = SupportRequest
-
-        @rate_limit_method(realm='support')
-        def post(self, request, *args, **kwargs):
-            return super(CreateRequestView, self).post(request, *args, **kwargs)
-
-

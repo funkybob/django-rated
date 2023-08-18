@@ -18,7 +18,7 @@ django-rated - Rate Limiting made easy
 
 Rated provides fine-grained rate limiting controls for Django.
 
-It allows you do define multiple "realms", each with its own limit, whitelist,
+It allows you do define multiple "realms", each with its own limit, allowed list,
 and responses.
 
 There are two mechanisms, which can be used individually, or combined:

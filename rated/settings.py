@@ -8,7 +8,7 @@ DEFAULT_DURATION = getattr(settings, 'RATED_DEFAULT_DURATION', 60 * 60)
 RESPONSE_CODE = getattr(settings, 'RATED_RESPONSE_CODE', 429)
 RESPONSE_MESSAGE = getattr(settings, 'RATED_RESPONSE_MESSAGE', '')
 
-DEFAULT_WHITELIST = getattr(settings, 'RATED_DEFAULT_WHITELIST', [])
+DEFAULT_ALLOWED = getattr(settings, 'RATED_DEFAULT_ALLOWED', [])
 
 REALMS = getattr(settings, 'RATED_REALMS', {})
 

@@ -11,12 +11,7 @@ from .signals import rate_limited
 POOL = redis.ConnectionPool(**settings.REDIS)
 
 
-class rate_limit:
-    def __new__(cls, *args, **kwargs):
-        if not args:
-            return partial(cls, **kwargs)
-        return super().__new__(cls, *args, **kwargs)
-
+class RateLimit:
     def __init__(self, func, realm=None):
         self.func = func
         if realm is None:
@@ -49,8 +44,8 @@ class rate_limit:
         '''
         conf = settings.REALMS.get(self.realm, {})
 
-        # Check against Realm whitelist
-        if source in conf.get('whitelist', settings.DEFAULT_WHITELIST):
+        # Check against Realm allowed
+        if source in conf.get('allowed', settings.DEFAULT_ALLOWED):
             return None
 
         key = 'rated:%s:%s' % (self.realm, source,)
@@ -75,5 +70,22 @@ class rate_limit:
     def make_limit_response(self):
         conf = settings.REALMS.get(self.realm, {})
 
-        return HttpResponse(conf.get('message', settings.RESPONSE_MESSAGE),
-                            status=conf.get('code', settings.RESPONSE_CODE))
+        return HttpResponse(
+            conf.get('message', settings.RESPONSE_MESSAGE),
+            status=conf.get('code', settings.RESPONSE_CODE),
+        )
+
+
+def rate_limit(func=None, **kwargs):
+    """
+    Generalised decorator.
+
+    When you use `@rate_limit` then func is set.
+    When you use `@rate_limit()` then func is None.
+    When you use `@rate_limit(key=val)` then func is None.
+
+    Only in the first case do we need to invoke the decorator; Python will do it otherwise.
+    """
+    if func is None:
+        return RateLimit(**kwargs)
+    return RateLimit(**kwargs)(func)
