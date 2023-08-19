@@ -1,5 +1,4 @@
 import time
-from functools import partial
 
 from django.http import HttpResponse
 import redis
