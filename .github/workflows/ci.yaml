@@ -1,0 +1,14 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install
+      run: pip install -r requirements-dev.txt
+    - name: Lint
+      run: flake8 rated/
+    - name: Test
+      run: pytest
