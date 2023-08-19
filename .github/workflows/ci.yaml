@@ -12,6 +12,10 @@ jobs:
         python-version: [3.7, 3.8, 3.9, 3.10, 3.11]
         django-version: [2.2, 3.2, 4.0, 4.1, 4.2]
 
+    services:
+      redis:
+        image: redis
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
