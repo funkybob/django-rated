@@ -10,12 +10,11 @@ class DecoratorTestCase(TestCase):
 
     def setUp(self):
         self.request = RequestFactory().get('/')
-        # Clear old values
 
     @override_settings(
         RATED_REALMS={
-            'default': dict(limit=1),
-            'other': dict(limit=2),
+            'default': {'limit': 1},
+            'other': {'limit': 2},
         },
     )
     def test_rate_limit(self):
@@ -30,8 +29,8 @@ class DecoratorTestCase(TestCase):
 
     @override_settings(
         RATED_REALMS={
-            'default': dict(limit=1),
-            'other': dict(limit=2),
+            'default': {'limit': 1},
+            'other': {'limit': 2},
         },
     )
     def test_other_realm(self):
