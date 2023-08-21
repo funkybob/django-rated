@@ -1,4 +1,5 @@
 import time
+from functools import partial
 
 import redis
 from django.http import HttpResponse
@@ -83,8 +84,6 @@ class RateLimit:
 
 def rate_limit(func=None, **kwargs):
     """
-    Generalised decorator.
-
     When you use `@rate_limit` then func is set.
     When you use `@rate_limit()` then func is None.
     When you use `@rate_limit(key=val)` then func is None.
@@ -93,5 +92,5 @@ def rate_limit(func=None, **kwargs):
     Python will do it otherwise.
     """
     if func is None:
-        return RateLimit(**kwargs)
-    return RateLimit(**kwargs)(func)
+        return partial(RateLimit, **kwargs)
+    return RateLimit(func, **kwargs)
