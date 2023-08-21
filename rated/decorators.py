@@ -58,9 +58,15 @@ class RateLimit:
             # Add our timestamp to the range
             pipe.zadd(key, now, now)
             # Update to not expire for another DURATION
-            pipe.expireat(key, int(now + conf.get('duration', settings.DEFAULT_DURATION)))
+            pipe.expireat(
+                key,
+                int(now + conf.get('duration', settings.DEFAULT_DURATION)),
+            )
             # Remove old values
-            pipe.zremrangebyscore(key, '-inf', now - settings.DEFAULT_DURATION)
+            pipe.zremrangebyscore(
+                key,
+                '-inf', now - settings.DEFAULT_DURATION,
+            )
             # Test count
             pipe.zcard(key)
             size = pipe.execute()[-1]
@@ -83,7 +89,8 @@ def rate_limit(func=None, **kwargs):
     When you use `@rate_limit()` then func is None.
     When you use `@rate_limit(key=val)` then func is None.
 
-    Only in the first case do we need to invoke the decorator; Python will do it otherwise.
+    Only in the first case do we need to invoke the decorator;
+    Python will do it otherwise.
     """
     if func is None:
         return RateLimit(**kwargs)
