@@ -6,6 +6,7 @@ v2.0.0:
 =======
 
 + Renamed "whitelist" to "allowed"
++ Droped middleware
 
 v1.1.2:
 =======

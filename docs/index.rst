@@ -30,33 +30,6 @@ There are two mechanisms, which can be used individually, or combined:
 Quickstart
 ----------
 
-Middleware
-----------
-
-1. Add 'rated.middleware.RatedMiddleware' to your settings.MIDDLEWARE_CLASSES
-
-2. Set your default limits:
-
-.. code-block:: python
-
-   RATED_DEFAULT_REALM = 'default'
-   # Duration over which we count requests
-   RATED_DEFAULT_DURATION = 60 * 60
-   # Maximum number of requests in DURATION period
-   RATED_DEFAULT_LIMIT = 100
-
-3. Assign URL patterns to realms:
-
-.. code-block:: python
-
-    RATED_REALMS_MAP = {
-        'index': 'default',
-        'important_view': 'default',
-    }
-
-Decorators
-----------
-
 1. Set your limits
 
 .. code-block:: python
@@ -84,7 +57,6 @@ Contents:
    :maxdepth: 2
 
    realms
-   middleware
    decorators
    settings
    changelog

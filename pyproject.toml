@@ -1,7 +1,7 @@
 [project]
 name = "django-rated"
 version = "2.0.0"
-description = "A rate limiting middleware for Django"
+description = "A rate limiting decorator for Django"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [

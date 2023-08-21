@@ -5,7 +5,7 @@ django-rated
 [![Build Status](https://secure.travis-ci.org/funkybob/django-rated.png?branch=master)](http://travis-ci.org/funkybob/django-rated)
 
 
-A rate limiting middleware for Django
+A rate limiting decorators for Django
 
 Introduction
 ============
@@ -19,13 +19,7 @@ You control which views are in which 'realm' by either decorating the view, or a
 Installing
 ==========
 
-In your settings.py add to your MIDDLEWARE_CLASSES:
-
-```py
-    'rated.middleware.RatedMiddleware',
-```
-
-Or decorate your views:
+Decorate your views:
 
 ```py
 @rate_limit('myrealm')
@@ -105,12 +99,6 @@ RATED_REALMS:
     A dict of config dicts.
     The keys are realm names.
     The values are dicts containing overrides for 'limit', 'timeout' and 'allowed'.
-    Default: {}
-
-RATED_REALM_MAP:
-
-    A mapping of url pattern names to realms.
-    This allows you to apply limits to views in 3rd party apps.
     Default: {}
 
 RATED_REDIS:
