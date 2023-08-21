@@ -1,7 +1,7 @@
 import time
 
-from django.http import HttpResponse
 import redis
+from django.http import HttpResponse
 
 from . import settings
 from .signals import rate_limited
@@ -47,7 +47,7 @@ class RateLimit:
         if source in conf.get('allowed', settings.DEFAULT_ALLOWED):
             return None
 
-        key = 'rated:%s:%s' % (self.realm, source,)
+        key = f'rated:{self.realm}:{source}'
         now = time.time()
 
         client = redis.Redis(connection_pool=POOL)

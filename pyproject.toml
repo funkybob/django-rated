@@ -46,3 +46,5 @@ addopts = "--cov=src/"
 branch = true
 source = ["rated"]
 
+[tool.pylint."message control"]
+disable = ["missing-module-docstring", "missing-class-docstring", "missing-function-docstring"]
