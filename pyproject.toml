@@ -38,9 +38,9 @@ test = [
 DJANGO_SETTINGS_MODULE = "tests.settings"
 
 django_find_project = false
-pythonpath = [".", "src"]
+pythonpath = ["."]
 
-addopts = "--cov=src/"
+addopts = "--cov=rated/"
 
 [tool.coverage.run]
 branch = true
