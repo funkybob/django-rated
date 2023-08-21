@@ -57,7 +57,7 @@ class RateLimit:
         # values we send are dependant on values in the DB
         with client.pipeline(transaction=False) as pipe:
             # Add our timestamp to the range
-            pipe.zadd(key, now, now)
+            pipe.zadd(key, { str(now):  now })
             # Update to not expire for another DURATION
             pipe.expireat(
                 key,
