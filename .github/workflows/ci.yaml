@@ -35,10 +35,11 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install
       run: |
-        pip install -e .
-        pip install flake8 pytest
+        pip install -e .[test]
         pip install -U Django==${{ matrix.django-version }}
     - name: Lint
-      run: flake8 rated/
+      run: pylint rated/
+    - name: isort
+      run: isort --check
     - name: Test
       run: pytest
