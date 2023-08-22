@@ -37,7 +37,7 @@ Default: 'default'
 The default realm to put rated views into.
 
 RATED_DEFAULT_DURATION
----------------------
+----------------------
 
 Default: 60 * 60
 
@@ -66,7 +66,7 @@ Default: ''
 Content to include in response when a request is limited.
 
 RATED_DEFAULT_ALLOWED
------------------------
+---------------------
 
 Default: []
 
