@@ -27,6 +27,8 @@ jobs:
       redis:
         image: redis
         ports:
+          # Don't ask me why, but we need to map this to a different port
+          # Thanks, Dan Sloan, for the tip.
           - 16379:6379
 
     steps:

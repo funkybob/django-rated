@@ -69,11 +69,6 @@ Otherwise, if the url pattern is named, and the name matches a realm name, it wi
 Settings
 ========
 
-RATED_DEFAULT_REALM:
-
-    The default realm to put views into.
-    Default: 'default'
-
 RATED_DEFAULT_TIMEOUT:
 
     How long an access history persists with no accesses.

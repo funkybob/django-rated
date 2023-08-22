@@ -2,20 +2,20 @@ import time
 from functools import partial
 
 import redis
+from django.conf import settings
 from django.http import HttpResponse
 
-from . import settings
 from .signals import rate_limited
 
 # Connection pool
-POOL = redis.ConnectionPool(**settings.REDIS)
+POOL = redis.ConnectionPool(**getattr(settings, 'RATED_REDIS', {}))
 
 
 class RateLimit:
     def __init__(self, func, realm=None):
         self.func = func
         if realm is None:
-            realm = settings.DEFAULT_REALM
+            realm = 'default'
         self.realm = realm
 
     def __call__(self, request, *args, **kwargs):
@@ -26,6 +26,10 @@ class RateLimit:
             return self.make_limit_response()
 
         return self.func(request, *args, **kwargs)
+
+    @property
+    def conf(self):
+        return getattr(settings, 'RATED_REALMS', {}).get(self.realm, {})
 
     def get_request_source(self, request):
         '''Return a source identifier for a request'''
@@ -42,14 +46,16 @@ class RateLimit:
 
         Returns True if limit is reached.
         '''
-        conf = settings.REALMS.get(self.realm, {})
-
-        # Check against Realm allowed
-        if source in conf.get('allowed', settings.DEFAULT_ALLOWED):
+        # Check against Realm allowed list
+        allowed = self.conf.get('allowed', getattr(settings, 'RATED_DEFAULT_ALLOWED', []))
+        if source in allowed:
             return None
 
         key = f'rated:{self.realm}:{source}'
         now = time.time()
+
+        duration = self.conf.get('duration', getattr(settings, 'RATED_DEFAULT_DURATION', 60 * 60))
+        limit = self.conf.get('limit', getattr(settings, 'RATED_DEFAULT_LIMIT', 100))
 
         client = redis.Redis(connection_pool=POOL)
         # Do commands at once for speed
@@ -59,26 +65,18 @@ class RateLimit:
             # Add our timestamp to the range
             pipe.zadd(key, { str(now):  now })
             # Update to not expire for another DURATION
-            pipe.expireat(
-                key,
-                int(now + conf.get('duration', settings.DEFAULT_DURATION)),
-            )
+            pipe.expireat(key, int(now + duration))
             # Remove old values
-            pipe.zremrangebyscore(
-                key,
-                '-inf', now - settings.DEFAULT_DURATION,
-            )
+            pipe.zremrangebyscore(key, '-inf', now - duration)
             # Test count
             pipe.zcard(key)
             size = pipe.execute()[-1]
-        return size > conf.get('limit', settings.DEFAULT_LIMIT)
+        return size > limit
 
     def make_limit_response(self):
-        conf = settings.REALMS.get(self.realm, {})
-
         return HttpResponse(
-            conf.get('message', settings.RESPONSE_MESSAGE),
-            status=conf.get('code', settings.RESPONSE_CODE),
+            self.conf.get('message', getattr(settings, 'RATED_RESPONSE_MESSAGE', '')),
+            status=self.conf.get('code', getattr(settings, 'RATED_RESPONSE_CODE', 429)),
         )
 
 
