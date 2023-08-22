@@ -36,7 +36,7 @@ Default: 'default'
 
 The default realm to put rated views into.
 
-RATED_DEFAULT_TIMEOUT
+RATED_DEFAULT_DURATION
 ---------------------
 
 Default: 60 * 60
@@ -75,20 +75,9 @@ A list of IPs which are exempt from rate limiting.
 Optional settings
 =================
 
-
 RATED_REALMS
 ------------
 
 Default: {}
 
 A dict of config dicts for each realm.
-
-RATED_REALM_MAP
----------------
-
-Default: {}
-
-A mapping of URL pattern names to Rated realms.
-
-This allows you to add a url/view into a realm without having to decorate the view.
-

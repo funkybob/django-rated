@@ -2,9 +2,6 @@
 Decorators
 ==========
 
-If you want to be very selective in where you rate limit, or only have a few
-views you want to limit, the decorator approach is probably best.
-
 The `rate_limit` decorator
 ==========================
 

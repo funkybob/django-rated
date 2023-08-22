@@ -10,11 +10,11 @@ A rate limiting decorators for Django
 Introduction
 ============
 
-`rated`` allows you to limit request rates a single client may attempt on views in 'realms' of your site.
+`rated` allows you to limit request rates a single client may attempt on views in 'realms' of your site.
 
-You control which views are in which 'realm' by either decorating the view, or adding the url pattern into the realm map.
+You control which views are in which 'realm' by naming the realm when you decorate the view.
 
-`rated` will keep track of how many requests, and when, a client has made and, if they've exceeded their limit, will return a configurable response -- `503 - Service Unavailable` by default.
+`rated` will keep track of how many requests, and when, a client has made and, if they've exceeded their limit, will return a configurable response -- `429 - Too many requests` by default.
 
 Installing
 ==========
@@ -22,6 +22,14 @@ Installing
 Decorate your views:
 
 ```py
+# Add this to the "default" realm
+@rate_limit
+def some_view(request):
+    ...
+```
+
+```py
+# Add this to a custom realm
 @rate_limit('myrealm')
 def myview(request):
 ```
@@ -31,7 +39,8 @@ Configuring
 
 Next, configure your realms.
 
-This is done by defining them in the RATED_REALMS setting.  This is a dict where the keys are realm names, and the values are dicts of configs.
+This is done by defining them in the `RATED_REALMS` setting.
+This is a dict where the keys are realm names, and the values are dicts of configs.
 
 A realm config may contain any of the following keys.  Any omitted fall back to the defaults from the settings below.
 
@@ -64,15 +73,8 @@ To add it to a specific realm:
 def myview(...)
 ```
 
-Otherwise, if the url pattern is named, and the name matches a realm name, it will be considered part of that realm.  There is also the RATED_REALM_MAP, which will map url pattern names to realm names.  The url pattern name is always mapped through here.
-
 Settings
 ========
-
-RATED_DEFAULT_TIMEOUT:
-
-    How long an access history persists with no accesses.
-    Default: 1 hour
 
 RATED_DEFAULT_LIMIT:
 
@@ -93,13 +95,19 @@ RATED_REALMS:
 
     A dict of config dicts.
     The keys are realm names.
-    The values are dicts containing overrides for 'limit', 'timeout' and 'allowed'.
+    The values are dicts containing overrides for:
+    - 'limit'
+    - 'timeout'
+    - 'allowed'
+    - 'code'
+    - 'message'
+
     Default: {}
 
 RATED_REDIS:
 
     Redis config settings.
-    These will be passed directly to create a redis.ConnectionPool instance.
+    These will be passed directly to create a `redis.ConnectionPool` instance.
 
 RATED_DEFAULT_ALLOWED:
 

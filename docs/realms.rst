@@ -6,8 +6,9 @@ All views in the same realm are considered equally in terms of rate limiting.
 This allows you to rate-limit access to a collection of views as a whole, such
 as an API or registration process.
 
-Each realm can have its own duration, limit, respones code/message, and
-allowed.  If not specified for a realm, these will fall back to the defaults.
+Each realm can have its own duration, limit, respones code/message, and allowed
+list.  If not specified for a realm, these will fall back to the global
+defaults.
 
 Config
 ======
@@ -51,6 +52,6 @@ Example
             'duration': 60 * 30,
         },
         # Return a 501 response when limited
-        'signup': dict(code=501),
+        'signup': { 'code': 501 },
     }
 

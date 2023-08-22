@@ -75,7 +75,10 @@ class RateLimit:
 
     def make_limit_response(self):
         return HttpResponse(
-            self.conf.get('message', getattr(settings, 'RATED_RESPONSE_MESSAGE', '')),
+            self.conf.get(
+                'message',
+                getattr(settings, 'RATED_RESPONSE_MESSAGE', 'Too many requests'),
+            ),
             status=self.conf.get('code', getattr(settings, 'RATED_RESPONSE_CODE', 429)),
         )
 

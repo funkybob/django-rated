@@ -47,7 +47,7 @@ Quickstart
     @rate_limit
     def my_view(request, ...)
 
-    @rate_limit(realm='special')
+    @rate_limit('special')
     def special_view(request, ...)
 
 Contents:

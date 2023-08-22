@@ -25,6 +25,7 @@ Bug fixes:
 
 + Corrected retrieval of IP from X-Forwarded-For header (thanks Nam!)
 + Pass 'realm' to make_limit_response in middleware (thanks Nam and Jesse!)
++ Simplified settings
 
 v1.1.0:
 =======
