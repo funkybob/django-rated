@@ -4,13 +4,21 @@ from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from django.test.utils import override_settings
 
-from rated.decorators import rate_limit
+import redis
+
+from rated.decorators import rate_limit, POOL
 
 
 class DecoratorTestCase(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.redis = redis.Redis(connection_pool=POOL)
+
     def setUp(self):
         self.request = RequestFactory().get('/')
+        self.redis.flushdb()
 
     @override_settings(
         RATED_REALMS={
