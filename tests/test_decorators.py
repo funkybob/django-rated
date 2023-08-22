@@ -1,3 +1,4 @@
+from time import sleep
 
 from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
@@ -26,6 +27,29 @@ class DecoratorTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         resp = test_view(self.request)
         self.assertEqual(resp.status_code, 429)
+
+    @override_settings(
+        RATED_REALMS={
+            'default': {
+                'limit': 1,
+                'duration': 1,
+            },
+        },
+    )
+    def test_limit_expires(self):
+        @rate_limit
+        def test_view(request):
+            return HttpResponse('')
+
+        resp = test_view(self.request)
+        self.assertEqual(resp.status_code, 200)
+        resp = test_view(self.request)
+        self.assertEqual(resp.status_code, 429)
+
+        sleep(2)
+
+        resp = test_view(self.request)
+        self.assertEqual(resp.status_code, 200)
 
     @override_settings(
         RATED_REALMS={
