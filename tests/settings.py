@@ -17,3 +17,6 @@ ROOT_URLCONF='test.urls'
 
 USE_TZ = True  # Avoid deprecation warning
 
+RATED_REDIS = {
+    'host': 'localhost',
+}
