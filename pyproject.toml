@@ -29,7 +29,6 @@ test = [
   "isort",
   "pytest",
   "pytest-django",
-  "factory-boy",
   "pytest-cov",
   "pylint-pytest",
 ]
